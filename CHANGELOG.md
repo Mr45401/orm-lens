@@ -9,6 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- **Models in a sub-package of an app now get the app's label**
+  ([#266](https://github.com/FROWNINGdev/orm-lens/issues/266)).
+  `io_storages/s3/models.py` inside an `io_storages` app (`migrations/` or
+  `apps.py` above it across `__init__.py` packages) was assigned app label
+  `s3`, breaking `describe io_storages.<Model>` and reporting false `drift`
+  against `io_storages/migrations/`. The CLI parser now walks up package
+  directories to the enclosing app directory and falls back to the module's
+  own directory when none has `migrations/` or `apps.py`.
 - **Parser: ignore Django field examples inside model docstrings.** Both the
   CLI and VS Code now keep those examples out of the model's field list.
 - **suggest-indexes: skip composites over a unique column**
